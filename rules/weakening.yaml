@@ -1,0 +1,49 @@
+# Reglas de "dirección segura" de cada setting de Intune.
+#
+# ESTE ARCHIVO ES EL CRITERIO DE SEGURIDAD, Y ES EDITABLE A PROPÓSITO.
+# Un diff genérico dice que un valor cambió. Lo que importa para seguridad es si el
+# cambio DEBILITA o FORTALECE la postura, y eso depende de conocer, por cada setting,
+# hacia qué lado es "más seguro". Ese conocimiento vive acá, en datos, no en el código.
+#
+# Tipos:
+#   bool  + seguro: true/false  -> alejarse de 'seguro' DEBILITA (p.ej. cifrado true->false)
+#   min                          -> más alto es más seguro; un descenso DEBILITA (longitud de PIN)
+#   max                          -> más bajo es más seguro; un aumento DEBILITA (minutos hasta bloqueo)
+#
+# Un setting que cambió y NO está acá se reporta como 'no_clasificado': cambió algo cuya
+# dirección de seguridad nadie definió. No se asume inofensivo — se marca para revisar.
+
+# ── Compliance de dispositivo ────────────────────────────────────────────────
+passwordRequired:                       { tipo: bool, seguro: true }
+passwordBlockSimple:                    { tipo: bool, seguro: true }
+passwordMinimumLength:                  { tipo: min }
+passwordMinutesOfInactivityBeforeLock:  { tipo: max }
+passwordExpirationDays:                 { tipo: max }
+passwordPreviousPasswordBlockCount:     { tipo: min }
+storageRequireEncryption:               { tipo: bool, seguro: true }
+securityRequireSafetyNetAttestationBasicIntegrity: { tipo: bool, seguro: true }
+securityBlockJailbrokenDevices:         { tipo: bool, seguro: true }
+osMinimumVersion:                       { tipo: min }
+deviceThreatProtectionEnabled:          { tipo: bool, seguro: true }
+defenderEnabled:                        { tipo: bool, seguro: true }
+firewallEnabled:                        { tipo: bool, seguro: true }
+bitLockerEnabled:                       { tipo: bool, seguro: true }
+secureBootEnabled:                      { tipo: bool, seguro: true }
+
+# ── Protección de aplicaciones (App Protection Policies) ─────────────────────
+pinRequired:                            { tipo: bool, seguro: true }
+minimumPinLength:                       { tipo: min }
+maximumPinRetries:                      { tipo: max }
+simplePinBlocked:                       { tipo: bool, seguro: true }
+fingerprintBlocked:                     { tipo: bool, seguro: false }   # bloquear huella NO es más seguro
+saveAsBlocked:                          { tipo: bool, seguro: true }
+contactSyncBlocked:                     { tipo: bool, seguro: true }
+printBlocked:                           { tipo: bool, seguro: true }
+periodOfflineBeforeAccessCheck:         { tipo: max }
+periodOfflineBeforeWipeIsEnforced:      { tipo: max }
+deviceComplianceRequired:               { tipo: bool, seguro: true }
+managedBrowserToOpenLinksRequired:      { tipo: bool, seguro: true }
+
+# ── Configuración de dispositivo (device configuration profiles) ─────────────
+passwordRequiredToUnlockFromIdle:       { tipo: bool, seguro: true }
+passwordMinimumCharacterSetCount:       { tipo: min }
