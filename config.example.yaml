@@ -1,0 +1,6 @@
+# Copiá a config.yaml (gitignored) y completá. NUNCA subas secretos.
+# Requiere un App Registration con permisos de SOLO LECTURA:
+#   DeviceManagementConfiguration.Read.All, DeviceManagementApps.Read.All
+tenant_id: ""
+client_id: ""
+client_secret: ""     # mejor: exportá IDRIFT_CLIENT_SECRET
